@@ -1,0 +1,31 @@
+#para correr programa:
+dir //contenido del directorio
+para cambiar directorio:
+cd "carpeta a la que querramos acceder"
+para compilar:gcc "programa".c -o "programa".exe -ansi -pedantic -Wall
+
+#proposición for:
+
+#include <stdio.h>
+/* imprime la tabla Fahrenheit-Celsius */
+main( )
+{
+int fahr;
+for (fahr = 0; fahr < = 300; fahr = fahr + 20)
+printf("%3d %6.1f/n", fahr, (5.0/9.0)*(fahr-32));
+}
+
+La proposición for es un ciclo, una forma generalizada del while. Si se compara
+con el while anterior, su operación debe ser clara. Dentro de los paréntesis existen
+tres secciones, separadas por punto y coma. La primera, la inicialización
+fahr = 0
+se ejecuta una vez, antes de entrar propiamente al ciclo. La segunda sección es
+la condición o prueba que controla el ciclo:
+fahr < = 300
+Esta condición se evalúa; si es verdadera, el cuerpo del ciclo (en este caso un simple
+printf) se ejecuta. Después el incremento de avance
+fahr = fahr + 20
+se ejecuta y la condición se vuelve a evaluar. El ciclo termina si la condición se
+hace falsa. Tal como con el while, el cuerpo del ciclo puede ser una proposición
+sencilla o un grupo de proposiciones encerradas entre llaves. La inicialización, la
+condición y el incremento pueden ser cualquier expresión.
