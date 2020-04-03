@@ -1,0 +1,1234 @@
+*- Trabajando con L-->inf nos quitamos los problemas de los bordes.
+
+*- El cluster que percola y aparece por primera vez es el m�s tenue entre ellos (una celda solo es l�mete con otro o a lo sumo dos m�s).
+
+*- g(r) debe ser la suma de derecha a izquierda y viceversa, ambas deben dar lo mismo.
+
+*- Cuando aumentamos las dimensiones, la morfolog�a se complica por las distintos arreglos que pueden tener los per�metros.
+
+*- Los nodos van a depender de los per�metros, debido a la forma que pueden adoptar.
+
+Clase 21/3
+
+Red de Bethe
+
+*- A pocos nodos, veo un nodo central del cual salen las ramas. A nodos inf, todo nodo es nodo central.
+
+*- En este tipo de red, una vez que elij un camino no puedo volver a su punto riginal.
+
+*- La relacion area volumen es importante para dimensiones grandes.
+
+*- El -1 en el calculo de la masa es por el nodo ya usado.
+
+*- La red de Bethe se comporta igual que un sistema infinito.
+
+*- Para formar los loop tengo que restringir los caminos con los pasos dados.
+
+*- Tama�o uno significa que salgo de un nodo ocupado y llego a un nodo ocupado.
+
+*- Como el sistema es infinito, las propiedades estadisticas de las ramas son iguales a la de las subramas.
+
+*- ncv = numero de caminos vivos, caminos que puedo recorrer.
+
+*- Tengo dos fases, una por encima de Pc y otra por debajo. Por debajo no se generan caminos a infinito, por encima s�. (Ver eso �ltimo)
+
+*- Pc cercano a 0, tama�os m�s peque�os.
+
+*- M�s alta la dimensi�n, mayor probabilidad de clusters infinitos.
+
+*- El tama�o medio diverge en el punto cr�tico.
+
+*- Area cantidad de nodos a una cierta distancia del centro, el volumen es los nodos que quedan dentro.
+
+Clase Pr�ctica 26/3/2019:
+
+Pc(L) = Pc(inf) + A*(L)^(1/gamma); Con L la longitud de la red.
+
+se puede reescribir como f=Ln(Pc(inf)-Pc(L)) hace que se planche cuanto m�s grande sea L, esto nos dice que que A depende de L. Lo que implica que no es 
+que aumentando arbitrariamente la ventana de nuestro sistema, estamos mejorando la informaci�n.
+
+f
+^
+|\
+| \
+|  \
+|   \
+|    \____________
+|
+----------------------> Ln(L)
+
+La varianza es sigma^2 = <p^2>-<p>^2
+
+<p>=Pc(L)
+^
+|    /
+|   /
+|  /
+| /
+|/Pc(inf)~0.5927
+|
+---------------------->sigma
+A medida que aumentamos L, no movemos en la recta alejandonos de Pc(inf).
+
+   ^
+   |
+   |	   /-------
+0.5|------/
+   |     /|
+   |____/ |
+   ----------------->
+	P_mediana
+Esto puede correrse del <p>=suma(1,N)(p_i/N)
+
+
+Día 4/5/19
+
+Tamaño de red L:
+L ~ (|p_c(L)-p_c(inf)|)^nu
+
+Longitud caracteriztica epsi:
+epsi ~ (|p-p_c(inf)|)^nu
+
+
+M = masa del cluster = L^D*M*(l/epsi)
+con L^D ideal (L--->inf),  m*(L/epsi) siendo "scaling infinito" y D la dimension fractal (1 <= D < 2)
+
+
+Llamamo P_inf = intensidad percolante = #nodos percolantes/#total de nodos
+
+
+P_inf   ^
+        |
+        |                        °
+        |                   ° 
+        |               °                 (el grafico no es recto, sino que es una curva estilo magnetización)
+        |            °
+        |          °
+        |_________(
+      ----------------------->
+                  p_c
+
+
+Para ver una transicion de fase es necesario dos cosas: Ver un cambio en p_c y ver un parametro de orden.
+
+
+Si vemos mejor en la curva en p --> p_c(inf)+ (por derecha)
+
+ p = P_inf +  SUMA(s=0,<inf)n_s*s    (n_s nodos de tamaño s)
+    '-----'   '--------------'
+ percolanes    no percolantes
+
+Evaluemos esto en p_c: 
+
+p_c = P_inf(p=p_c(inf)) + SUMA(s=0,inf) n_s(p_c)*s
+                                       '----------'
+                                     supongo n_c(p_c) = q_0*s^(-Tao)
+
+En este caso estoy usando un scaling infinito ya que estoy analizando una red infinita y estoy parado en p_c.
+
+Y P_inf(p ~ p_c(inf)) = p_c - SUMA(s=0,inf)q_0*s^(1-Tao)
+
+Justo en p_c, P_inf = 0, entonces P_inf(p ~ p_c(inf)) = SUMA(s=0,inf)q_0*s^1-T - SUMA(s=0,inf)n_s(p ~ p_c)*s
+                                                                                             '--------------'
+                                                                                     q_0*s^(1-Tao)*f[(p-p_c)*s^sigma] con un sigma desconocido.
+                                                                                                    '---------------'
+                                                                                                           =z
+
+Esto nos queda luego de cuentas:   P_inf(p ~ p_c(inf)) = SUMA(s=0,inf)q*s^(1-Tao)*(1-f[z]) ~ INT(0,inf)q*s^(1-Tao)*(1-f[z]) ds
+
+Dando: P_inf = q'_0*(p-p_c)^((Tao-tao)/sigma)*INT(0,inf)z^(tao-Tao)*f'[z] dz ~ (p-p_c)^((Tao-tao)/sigma)
+                                                                                       '---------------'
+                                                                                         =beta>0 => Tao > tao
+
+Si calculo M/L^d con d la dimensión espacial = 2 (no fractal) nos queda M/L^d ~ L^D/L^2 ~ L^(D-2) ~ (p-p_c)^(-nu*(D-2)) y P_inf ~ M/L^d por definición,como
+P_inf ~ (p-p_c)^beta por lo tanto nos queda beta = -nu*(D-2) (o =-nu*(D-d)) y por ende (Tao-tao)/sigma=nu*(d-D) entonces Tao = tao +nu*sigma*(2-D)  (D_teo = 91/48 
+nu_teo = 4/3)
+
+De esta forma si miro un entorno del gráfico anterior al rededor de p_c se pueden hallar estos valores. En la práctica no será una recta el cambio de pendiente
+abrupto, para saber donde "ver" la recta de cambio de pendiente. Otra forma es hacer Ln(n_s) = -Tao*Ln(s)+Ln(q_0)
+
+Tao (Tao=2.05) debería ser >2 pero puede pasar que de ~1.85, el problema puede venir del ajuste, o de suponer que q_0 y Tao son parámetros independientes.
+
+Veamos q_0 = n_s(p_c)/s^(-Tao) y pensemos en p_c = P_inf(p=p_c(inf)) + SUMA(s=0,inf) n_s(p_c)*s por lo tanto nos queda
+                                                  '----------------'               '-----------'
+                                                        = 0                          q_0*s^(-Tao)
+
+q_0 = p_c/SUMA(s=0,inf)s^(1-Tao) = p_c/Gi(Tao-1) siendo Gi una suma de Riemann
+
+Por lo tanto Ln(n_s)=y=-Tao*x+b=-Tao*Ln(s)+Ln(q_0) por lo tanto el Chi^2 será muy bueno Chi^2=SUMA(i=1,N)[y_i-(-Tao*x_i+b)]^2 
+
+Si yo me muevo de p_c ya no vale la ley de potencias que estoy usando para n_s, pasa de ser una recta a ser una curva. Pero moviendo ciertos parámetros puedo 
+sintonizar el sistema para que quede una recta y de ahí obtener el p_c por lo tanto en el p_c puedo obtener ambos sintemas de la transición sintonizándolo.
+
+Ln(n_s)^
+       | \
+       |  \
+       |   \
+       |    \
+       |     \        *            Tengo que quitar cualquier cosa que supere el tamaño de ventana para que el ruido del final se quite.
+       |      *   * *              Si estoy parado mal en la ventana, en vez de una recta dará una curva decreciente valiendo q_0*s^(-Tao)f[g(s),p_p_c] de scaling inf.
+       |      * *   
+     ----------------------->
+                           Ln(s)
+
+11/4/2019
+
+Momentos / gamma-matching:
+
+P_inf   ^
+        |
+        |                        °
+        |                   ° 
+        |               °                 (el grafico no es recto, sino que es una curva estilo magnetización)
+        |            °                    P_inf ~ (p-p_c)^beta
+        |          °                      (parámetro de orden)
+        |_________(-->2° orden bien def.
+      ----------------------->
+                  p_c
+
+
+M^
+ |
+ |
+ |°  °
+ |        °                               M = - (dG/dH)|  ~  ((T-T_c)/T_c)^beta
+ |            °                                         H->0
+ |              ° 
+ |                °
+ |                 °
+ |                  -------		Uno no ve exactamente la respuesta del
+---------------------------->           sistema (no ve los dipolos magnetizandoce)
+                            1/T         => Función respuesta.
+
+C = T^2*(d^2 G/dT^2)
+Chi = (1/V)*(dM/dH)=-(1/V)*(d^2 G/dH^2)   => C ~ ((T-T_c)/T_c)^(-alpha)
+                                             Chi_M  ~  ((T-T_c)/T_c)^(gamma)
+                           
+
+En nuestro problema: P_inf = p-SUMA(s=0,inf)n_s(p)*s
+                              '--------------------'
+                                       media(momento de orden 1)
+
+m_2(p)=SUMA(s=0,inf)n_s(p)*s^2 = SUMA(s=0,inf)q_0*s^(-Tao)*f(z)*s^2
+
+                       s->z y  si z = s^(Sigma) * (p-p_c) => dz = Sigma*(z/s)ds
+=> INT(0,inf)q_0*s^(2-Tao)f(z)ds = 
+
+INT(0,inf)q_0*(z/(p-p_c))^((2-Tao)/Sigma) *f(z) dz/Sigma*(p-p_c)*z (puede que esté mal)
+
+dando algo similar a ~ (p-p_c)^((Tao-3)/Sigma) * INT(0,inf)F(z)dz
+
+Y como tanto el sistema magnético y este está relacionado el resultado de Chi_M
+estará relacionado con este resultado (por ser sist. de segundo orden)
+
+=> -gamma = (Tao-3)/Sigma (gamma es pos.)
+
+Como debe diverger, Tao-3 < 0 y anteriormente dijimos que Tao era menor a 2, bien.
+
+También se puede ver Tao = 2+beta*Sigma y gamma = (3-Tao)/Gamma 
+=> 2*beta=2*(Tao-2/Sigma) y gamma + 2*beta = (3-Tao)/Sigma + 2*((Tao-2)/Sigma)
+=> gamma + 2*beta = (Tao-1)/Sigma
+
+con C ~ ((T-T_c)/T_c)^(-alpha) y alpha + 2*beta + gamma = 2
+=> alpha + (Tao-1)/Sigma = 2 o alpha = 2 -  (Tao-1)/Sigma
+
+
+Si vemos M -> dG/dH <-> m_1(p) y Chi -> d^2 G/dH^2 <-> m_2(p)
+
+Faltaría el momento de orden 0:
+
+C -> d^2 G/dT^2 <-> m_0(p) y para ello hacemos SUMA(s=0,inf)n_s(p) (sin mult. c/ s)
+
+=> INT(0,inf)n_s(p)ds ~ (p-p_c)^(2-alpha)
+           '------'
+           q_0*s^(-Tao)*f(z)
+
+
+Por lo tanto:
+            _
+           |
+           |m_0(p) ~ |p-p_c|^(2-alpha) (Función respuesta)
+           |
+          <|m_1(p) ~ (p-p_c)^beta      (Parámetro de orden)
+           |
+           |m_2(p) ~ |p_p_c|^(-gamma)  (Función respuesta)
+           |
+            ¬
+
+
+      m_2 ^            
+          |          
+          |            
+          |        °' ° --> Efecto de red "finita"
+          |        °' °       -
+|p-p_c|^(-gamma)   °' °        |
+          |       ° '  °       |Ley de pot.
+          |      °  '   °      |
+          |    °    '     °   -
+          |--°      '       °-- -> Regular
+         -----------'------------->
+                   p_c(L)
+
+Para obtener información me puedo ir desplazando tanto por dereca como por izq.
+en un rango de +- 0.1 en la curva anterior y con la pendiente en escala Ln 
+sacamos gamma y haciendo gamma(+ o -) vs p_c (+ o -)y donde se cruzen (ya que 
+sabemos que esto se debe dar para ambos lados) será el valor buscado. En el caso 
+de que no se toquen, se usa el punto de menor acercamiento.
+
+
+16/4/19
+
+Renormalización
+
+
+F(p)^                 _______
+    |               °        '
+    |            °           '
+    |           |            '
+    |           |            '                F(p) = F((p-p_c)*L^(1/nu))
+    |           |            '                             |
+    |           |            '                             ----> Indica un
+    |          °             '                                  reescalamiento
+    |______  °               '
+  ---------------------------'--->
+                             1
+
+A esto se lo llama renormalización de "celda grande".
+
+Hoy se verá algo llamado renormalización de "celda chiva".
+
+Si tengo en una ventana un cluster percolante con una longitud característica 
+epsi y reescalo a una escala más chica, no solo la ventana será menor sino 
+que también la long. característica se modificará epsi' = epsi / b siendo
+b la longitud de la ventana antes del reescalamiento.
+
+como epsi ~ |p-p_c|^(gamma) y  epsi' ~ |p'-p_c'|^(gamma') con epsi' = epsi/b,
+pero p_c' = p_c y gamma' = gamma ya que las dimensiones o el formato de la
+red no cambiaron.
+
+=> |p'-p_c|^(-gamma) = (1/b)*|p_p_c|^(-gamma) y gamma = Ln((p'-p_c)/(p-p_c))/Ln(b)
+
+La nueva red reescalada se la llama supernodo.
+
+Se puede resscribir como p'=p+(dp'/dp)*(p-p_c) y gamma ~ (Ln(dp'/dp)|p_c)/Ln(b) (1)
+
+Nos interesa cuando percola ya que tenemos que evaluar en p_c.
+
+Al reescalar, para elegir la probabilidad de ocupación en el supernodo, no hay
+un criterio fijo. Los más importantes son el de "Mayoría Simple" o el de
+"Percolación" y con esto se decide si el supernodo está o no ocupado.
+
+Veamos estos casos:
+
+1)Criterio "Percolación":
+                                              _
+0 0 | 1 0  0 1  0 0  0 0 | 1 1  0 0  1 0  0 1  |   No
+0 0 | 0 0  0 0  1 0  0 1 | 0 0  1 1  0 1  1 0 _|percolan
+                                      _
+0 1  1 0   | 0 1  1 0  1 1  1 1 | 1 1  |Percolan 
+0 1  1 0   | 1 1  1 1  0 1  1 0 | 1 1 _|
+2(1-p)^2p^2      4(1-p)p^3        p^4    Prob. de percolación de supernodo.
+
+
+p_c'=2(1-p)^2p_c^2*4(1-p)p_c^3*p_c^4  y  p_c' = p_c = p*
+
+=> p* = 2p*^2-p*^4 Dano p* = 0.681
+
+p* = f(p*) es un punto fijo con el cual se puede iterar y convergerá al valor del punto
+fijo
+
+De esa forma se puede volver a la ecuación (1) para gamma (~1.63) y obtener el
+ valor.
+
+2)Criterio de "Mayoría Simple":
+
+0 0 | 1 0  0 1  0 0  0 0 | 1 1  0 0  1 0  0 1  |   No
+0 0 | 0 0  0 0  1 0  0 1 | 0 0  1 1  0 1  1 0 _|percolan
+                                      _
+0 1  1 0   | 0 1  1 0  1 1  1 1 | 1 1  |Percolan 
+0 1  1 0   | 1 1  1 1  0 1  1 0 | 1 1 _|
+            '________________________'
+             Solo me quedo con estos.
+
+
+p_c'=4(1-p)p_c^3*p_c^4  y  p_c' = p_c = p*
+
+Dando un p* = 0.7676, obteniendo un gamma peor. Esto es debido a que en este
+criterio, las conexiones tenues no están siendo tomadas en cuenta.
+
+
+
+23/4/19
+
+Práctica 2:
+
+Ejercicio "Importance Samplig"
+
+Quiero calcular la integral I=INT(-inf,inf)x^2*EXP(-(x^2)/2)dx
+
+
+F(p)^                 _______
+    |               °        '             Para calcular esto en la guia anterior:
+    |            °           '              for(i=0;i<m;i++)
+    |           |            '              { ...
+    |           |            '                p = p + delta p 
+    |           |            '                ...
+    |           |            '              }          
+    |          °             '                                  
+    |______  °               '
+  ---------------------------'--->
+                             1
+
+
+m_2 ^            
+    |          
+    |            
+    |         ° ' ° 
+    |         ° ' °       
+    |        °  '  °        
+    |      °    '    °     
+    |    °      '      °   
+    |--°        '        °--
+   -------------'------------->
+                   p_c(L)
+
+Pero esto sacrifica rendimiento, y puede tardar mucho en calcular valores donde
+no es necesario tantos datos (las secciones planas) y no tener mayor cantidad
+de datos en sectores más importantes (como donde se da la pendiente)
+
+De la forma anterior es como decir que cada uno de los valores de p son
+equiprobables.
+
+
+Si volvemos a la integral que queremos calcular:
+
+I=sqrt(2*PI)INT(-inf,inf)x^2*f(x)dx = sqrt(2*PI) Sigma ^ 2
+
+con f(x) = 1/sqrt/(2*PI)EXP(-(x^2)/2)
+
+o ~ sqrt/(2*PI) SUMA(i=1,N) x_i^2 * f(x_i) delta x_i donde se necesitarán más
+valores al rededor de un f_max o f_importantes
+
+o dicho de otra manera, la probabilidad p de que haya más a menos puntos en un
+sector del cálculo es p = (f(x_i)*delta x)/(SUMA(j=1,N)f(x_j)*delta x)
+
+Método
+ |
+ |->  Antes: x_(i+1) = x_i + delta x
+ |                      _
+ |                     |  1 , si x_(i+1) es lo anterior. 
+ |           p(x_i)= < |
+ |                     |_ 0 , si no lo es.
+ |
+ |->  Ahora: p = (f(x_i)*delta x)/(SUMA(j=1,N)f(x_j)*delta x)
+             P  = f(x_i)/SUMA(j=1,N)f(x_j) =  f(x_i)*(1/N)/(SUMA(j=1,N)f(x_j)*1/N)
+                                                          '______________________'
+                                    Esto se parece a una probabilidad condicional.
+
+
+Osea P(A/B_1)*P(B_1) + P(A/B_2)*P(B_2) +...+ P(A/B_N)*P(B_N) (Si A no dep. de B_i)
+= P(A)*P(B_1) + P(A)*P(B_2) + ... + P(A)*P(B_N) donde P(A)=1/N y P(B_i)=f(x_j)
+
+Para elegir un nuevo muestreo, de uno secuencial (1/N) a uno inteligente 
+(f(x_i)/f(x_j)) y de esta forma ganas que tus puntos o datos estén dentro de los 
+la f_importante.
+
+En nuestro ejemplo de integral vemos que la exponencial es una distribución
+normal vamos a necesitar de esta distribución de puntos propuesta.
+
+Entoces siguiendo lo hecho, necesito en algún punto para realizar el calculo,
+hace la SUMA prupuesta para hallar el Sigma y realizando el muestreo solo
+cuando la probabilidad sea mayor a algún valor propuesto.
+
+Si f(x_1)/f(x_0) es mayor de los que se propuso, se hacepta, sino será
+f(x_2)/f(x_0) y así hasta que de, con |x_1 - x_0| <= delta.
+( o escrito con lo que tenemos será EXP(-(x_1^2)/2)/EXP(-(x_0^2)/2) y así
+sucesivamente.) <o algo así>
+
+Esto ya no se que significa, pero lo anotaré p(x_(i+1)) = 
+(1/(2*delta)) * f(x_(i+1))/f(x_i) si f(x_(i+1))<=f(x_i)(probabilidad de aceptación)
+o 1/(2*delta)*1 = p* si f(x_(i+1))>f(x_i) (probabilidad subyacente, no se programa, ya
+está dada implicitamente en los calculos.)
+
+
+En nuestro ejemplo:
+p(x_(i+1)) = p*(EXP(-(x_(i+1)^2)/(2)))/(EXP(-(x_i^2)/(2)))   o   p*
+
+
+
+25/4/19
+
+Ising en 2D
+
+s_i = +-1     lugar en la red
+
+beta*H = -J*SUMA(ij)s_i * s_j - (B/k_b*T) SUMA(i) s_i      NVT
+
+
+Canonico:
+
+x=(s_1,s_2,...,s_N)
+
+p(x) = EXP(-beta*H(x))/(SUMA(x)EXP(-beta*H(x)))           
+SUMA(x)=SUMA(s_1=+-1)*SUMA(s_2=+-1)*...*SUMA(s_N=+-1) ~ 2^N
+
+J* = 0   EXP(-beta*H(x)) = EXP(B* * SUMA(i)s_i) = PROD(i=1,N)EXP(B* * s_i) bla 
+bla bla
+
+
+Cadena de Markov:
+
+P(x->y)=p(x,y)
+
+|-------------
+0--->1----|   |     Distintos estados interconectados con probabilidad p
+     |    |   |
+2   |     3----
+^---4<----
+
+Ejemplo: Rotonda
+                            1-p      p
+p(i,i+1)=p              N<------1-------->2
+p(i,i-1)=p                                
+                       ...                ... 
+                            p      1-p
+                       i+1<---- i-------> i-1
+
+               _1  2 3 ... N_
+             1| 0  p 0 ..... |
+Entonces P=  2|1-p 0 p ....  |
+             3|              |
+           ...|              |
+             N|_            _|
+
+
+Estado incial: q_0(x)>= 0 Para todo x  SUMA(x)q_0(x) = 1
+
+¿q_1(x)?
+
+q_1(x) = p(0,x)*q_0(0)+p(1,x)*q_0(1)+...
+q_1(x) = SUMA(y)q_0(y)*p(y,x) = (q_0*p)(x) ~> q_1 = q_0*p
+
+q_n = q_0*p^n ~> ¿Existe q_0 tal que q_0 = q_0*p?
+
+Dist. Estacionaria: 
+pi = pi*p
+pi(x) = SUMA(y)pi(y)*p(y,x)    (Ec. de Balance)
+
+En nuestro ejemplo
+pi(x) = p(x-1,x)*pi(x-1) + p(x+1,x)*pi(x+1)
+pi(x) = (1-p)*pi(x-1) + p*pi(x+1)
+
+pi(x) = 1/N (En algún lado debe estar) q_0*p^n -------> pi
+                                                n->inf
+
+Ec. de Balance Detallado:
+ 
+
+pi(x).p(x,y) = pi(y)*p(x,y)         para todo x,y
+
+SUMA(y)pi(x)*p(x,y) = SUMA(y)pi(y)*p(y,x)
+
+pi(x) = SUMA(y)pi(y)*p(y,x)
+
+
+Veamoslo mejor: 
+p(0,1) = 1
+p(i,i+1) = p
+p(i,i-1) = 1-p   i>1    pi(i)*p(i,i+1) = pi(i+1)*p(i+1,i)
+                             '-------'          '-------'
+                                = p               = 1-p
+
+pi(i+1) = p/(1-p) * pi(i) = 1/p (p/(1-p))^(i+1) * pi(0) y algo más que suerte
+
+
+Metropolis Monte-Carlo:
+Construyo p(x,y) tal que mi pi(x) cumpla balance detallado.
+                                 _
+1) Matriz de propuesta q(x,y)     | 
+                                  |> p(x,y) = q(x,y)*r(x,y)
+2) Matriz de aceptación r(x,y)  _|
+
+r(x,y)=min{ 1; pi(y)/pi(x) * q(y,x)/q(x,y)}
+
+pi(x)*q(x,y) > pi(y)*q(y,x)
+
+pi(x)*p(x,y) = pi(x)*q(x,y) * (pi(y)*q(y,x))/(pi(x)*q(x,y)) * 1 = pi(y)*p(y,x)
+
+r(y,x) = min{1; pi(x)/pi(y) * q(x,y)/q(y,x)}
+
+Tomo q(x,y) = q(y,x)  y  r(x,y)=min{1, pi(y)/pi(x)}
+
+pi(x) = EXP(-beta*H(x))/z ~> pi(y)/pi(x) = EXP(-beta*H(y))/EXP(-beta*H(x)) =
+EXP(-beta*(H(y)-H(x))) = EXP(-beta*delta E)
+
+Si delta E <= 0 -> r(x,y) = 1
+
+Si delta E > 0 -> r(x,y) = EXP(-beta*delta E_(x->y))
+
+
+Sitio i:   q=Elijo uniformemente spin e invierto    (d=down y u=up)
+
+q(u,d) = 1/N = q(d,u)
+
+r(u,d) = min{1, EXP(-beta*(E_d - E_u))} = min{1, EXP(-2 * B*)} = EXP(-2 * B* )
+
+r(d,u) = min{1, EXP(-beta*(E_u - E_d))} = min{1, EXP(2 * B*)} = 1
+
+
+       u   d
+   u  1-p  p
+P=                         y mucho bla bla en el medio
+   d  q   1-q   
+
+Autovalores de p: lambda= 1-1/N * (1+EXP(-2 * B*)) < 1 -> Autovector v_2
+
+q_0 = q_0 * p^n = a*1^n * pi + b*lambda^n*v_2 ~>  lambda^n < epsilon = 10^(2)
+
+
+n < Ln(epsilon)/Ln(lambda)  =>  n ~ N*(1+EXP(-2 * B*))^(-1) * Ln(1/epsilon)
+
+
+Me importa el número de pasos por sitio
+             
+B* = B/(k_B*) --------> inf  =>    n~N*Ln(1/epsilon)
+              |  T->0     
+              |
+              --------> 0    =>  n~N/2 * Ln(1/epsilon)
+                T->inf    
+
+
+Moraleja: Siempre empezar en temperaturas altas y bajando registrando los valores.
+
+Ising (Metropolis)
+
+beta*H = -J/(kT)SUMA(i,j)S_i*S_j - B/(kT)SUMA(i)S_i
+
+Q = SUMA() de CACA
+
+w(S_(i+1))/w(S_i) = EXP(-beta*H(S_i+1))/EXP(-beta*H(S_i))     (En el problema EXP(-(x_(i+1)^2)/(2))/EXP(-(x_(i)^2)/(2))
+
+
+
+Grafico de Magnetizacion ya hecho en el nano...
+
+
+
+                _
+<S_i> = <M>/N =| 0 si J* < J*_c
+               |
+	           |_[1-sinh^4(2 * J*)]^(1/8)   si J* > J*_c   (Onsager)
+
+
+Combiene todos alineados en la configuraci�n inicial para que no tarde literalmente una eternidad.
+
+
+<S_i>  ^
+       |            �  �   �     �
+       |        �          �
+       |      �     �
+       |    �  �
+       |  �
+       |�
+       -------------|---------->
+       Termalizaci�n
+           
+               ~ 0
+        _________________________
+       |                         | 
+g(k) = (<S_i * S_(i+k)> - <S_i>^2)/(<(S_i)^2> - <S_i>^2) ~ 0  => <S_iS_(i+tao)> = 
+(Nivel de correlaci�n)						~ <S_i>^2
+								= <M>^2/N^2 = 1/N^2 * (<M^2> - Chi)
+
+
+Funci�n respuesta: 
+Chi = dM/dB|(B->0) = <M^2> - <M>^2 Fluctuaciones de Magnetizaci�n.
+
+C = 1/(kN) * dU/dT = 1/(kN) * d<H>/dT = <H^2> - <H>^2  Fluctuaciones de Energ�a.
+
+Si estamos en precencia de una transicion, las fluctuaciones son grandes.
+
+S ^
+  |
+  |�
+  |�
+  | �
+  |  �
+  |   �
+  |    �__________
+  ------|-------------------->
+       tao
+
+Donde separando denomidanodres en la funcion correlaci�n:
+
+1 - b*tao ~ g(k) ~ 1 - (1 - <S_i * S_(i+tao)>)/(1 - <S_i>^2)  =>  tao ~ Chi  Mayor respuesta de correlaci�n Chi, mayor tao.
+
+<S_i> es el parametro de orden de este problema por ser una transici�n de fase de segundo orden.
+
+Volviendo a la mierda de antes, P_inf = |p - p_c|^beta  =>  Con el nuevo problema: p -> T; p_c -> T_c; P_inf -> <M>/N
+
+=> <M>/N ~ |T - T_c|^beta
+
+
+Haciendo una expanci�n de la soluci�n de Onsager, sinh(x) ~ x + x^3/3! + ...  Me quedar�:
+
+=> [1 - (T/T_c)^4]^(1/8) = [[1-(T/T_c)][1+(T/T_c)][1+(T/T_c)^2]]^(1/8) ~ (1 - (T/T_c))^(1/8) 
+
+Entonces de ac� se puede ver que beta = 1/8 uno de los exponentes cr�ticos.
+
+Si derivamos <M> podemos sacar Chi, y como es la derivada de una potencia, es valido decir que Chi como una potencia.
+
+Si <M>/N ~ |T-T_c|^(1/8)
+
+=>  Me animo a decir Chi ~ |T-T_c|^(-gamma)
+
+Podemos decir que tao ~ L^2
+En Percolaci�n epsilon (la distancia caracter�stica) ~ |p - p_c|^(-gamma)   que cerca de la transici�n epsilon -> L^D
+donde D es la dimensi�n fractal (D >= 1)
+
+Entonces volviendo a tao esperar�a que tao ~ L^(2D)   (tao ~ epsilon^z, donde z es el coeficiente din�mico cr�tico)
+Entonces comprarando con lo anterior z ~ 2
+
+Volviendo a lo de antes Chi ~ |T-T_c|^(-gamma) = |T-T_c|^(-gamma*nu/nu) = [|T-T_c|^(-nu)]^(gamma/nu) ~ epsilon^(gamma/nu)
+
+Y vimos que tao ~ Chi ~ epsilon^(gamma/nu) => gamma/nu ~ z ~ 2 el segundo de los exponentes cr�ticos.
+
+Por lo tanto, beta = 1/8 y gamma/nu ~ 2  (En las cuentas z ~ 2.16  y gamma/nu = 7/4 ~ 1.75)
+
+Chi ^
+    |
+    |        �  �
+    |        �  �
+    |        �  �
+    |       �    �
+    |     �        �
+    |---�            �----
+    ----------|-------------->
+              1/J*_c           1/J*
+
+En los calculos computacinales no va a diverger sino que dar� una "campana" por el efecto de red finita.
+
+Con la capacidad calor�fica C pas� algo similar. Onsager demostr� que C ~ Ln(1-(T/T_c)) que no es una ley de potencia.
+Que pasa si impongo que C ~ |T-T_c|^alpha, el �nico valor que esto lo cumple es alpha = 0.
+
+Con la relaci�n entre exponentes obtenemos gamma: nu * d = 2 - alpha (con d la dimensi�n) y por lo tanto gamma = 7/4
+y esto se puede chequear con la identidad de Rushgood (ponele) identidad entre exponentes alpha+2*beta+gamma=2 
+
+Tambi�n se puede hacer g(taoH) = (<H_i * H_(i+taoH)> - <H_i>^2)/(<(H_i)^2> - <H_i>^2)
+
+que puede ser distinto al tomado anteriormente g(taoChi) = (<S_i * S_(i+taoChi)> - <S_i>^2)/(<(S_i)^2> - <S_i>^2)
+y si llegan a diferir se toma el m�s largo.
+
+
+9/5
+
+Periodicidad
+                         _
+Ising p* = 1/L^2        | 1 0 1 1 0  Si me paro en el ultimo de la primera fila,
+                        | 0 1 0 1 1  no solo tengo que ver el de la izquierda 
+(1 up, 0 down)  L^2=tao<| 1 0 0 1 0  y el de abajo, sino que tambi�n el primero
+                        | 0 1 1 0 0  de la misma fila y el �ltimo de la ultima
+                        |_1 0 1 1 0  fila por su condici�n de periodicidad,
+                                     y esto de alguna forma en el sistema repercute.
+
+g(k) ^
+     |
+     |�
+     |  �
+     |    �                                        Esto se ve en el grafico de 
+     |     �                                       g(k)
+     |       �
+     |        �          �
+     -----------|� -----�----------------->
+              L^2  �--
+
+p_nu = p* * (1-p*)^(nu-1)
+
+SUMA(nu=1,inf)p* * (1-p*)^(nu-1) = p* * 1/(1-p*) SUMA(nu=1)(1-p*)^nu
+
+<nu> = SUMA(nu=1,inf)(nu*p*) = p*SUMA(nu=1,inf)nu*(1-p*)^(nu-1) = 
+=p* d/d(1-p*) [SUMA(nu=0,inf)(1-p*)^nu] = 1/p* = L^2 que es lo que vimos antes.
+
+Hago metropolis para levantar la curva de magnetizaci�n (Ver el nano, cortar� el eje x en 1/J_c*) con L finito no habr� una propia compensaci�n con lo cual el corte no ser� exacto y esto se debe a que en realidad estoy viendo replicas de el sistema por la caracter�stica de periodicidad.
+
+Esto en elgr�fico se ve como una curva suavizada en el punto de corte (1/J_c*)
+En la transicion epsilon -> inf, pero en realidad tengo una ventana replicada y estar�a viendo un cluster m�s grande de lo que es siendo en realidad epsilon ~ L
+
+    ^ Chi = <M^2> - <M>^2
+    |
+    |       |�  �                    Esto trasladado al gr�fico de suseptibilidad
+    |     <-|�  �                    se traslada a que est� corrido. Esto al
+    |       |�  �                    evaluar me dar�n valores distintos a los
+    |       |    �                   esperados deformandome y volviendo
+    |     � |      �                 asim�trica la funci�n respuesta ya que solo       
+    |---�   |        �----           sucede del lado del cluster grande, osea
+    --------|-|-------------->       del lado izquierdo.
+             1/J*_c           1/J*
+                
+Cerca de la transici�n las condiciones de contorno peri�dicas son malas.
+
+14/5
+
+Bash y Consola BFF
+
+Sirve para: - Velocidad
+	    - NO necesitamos info. gr�fica
+	    - Paralelizar !!
+ls, cp, dir, rm, col
+
+Ejmeplo: CompyCorrer.sh
+
+#!/bin/bash
+file=ising
+start=$SECONDS
+gcc -Wall -O3 -o $file.exe $file.c -lm
+./$file.e
+duracion=$((SECONDS-start))
+echo $duracion>>tiempo.txt
+
+Para corre: bash CompyCorrer.sh
+
+Puede recibir hasta 9 argumentos de lineas de comando
+CLA -> 9
+
+$n -> n-esimo argumento 1<=n<=9
+$o -> Nombre del .sh
+$@ -> lista de argumento
+
+bash CompyCorrer.sh ising
+#!/bin/bash
+file=$1
+
+Ejemplo: Percolaci�n para multiples L
+
+int main(){
+	float* Ls={4,16,...,128};
+	for(i=0; i<n; i++){
+		L=Ls[i]
+		...
+		Calculos a L fijo}
+	}
+
+o mejor para no modificar el codigo si es que quiero solo hacer uno de los Ls
+
+int main(int argc, char* argv){
+	float L=16;
+	if(argc>1) L=int(argv[i]);
+	...
+	Calculos a L fijo
+	...
+	}
+
+bash perc.sh 4 16 64
+
+#!/bin/bash
+for L in $@
+do
+./perc.exe $L
+done
+
+https://ryanstutorials.net/bash-scripting-tutorial/
+
+Makefile: 
+gcc -Wall -O3 -o $file.exe $file.c -lm
+
+Creamos un archivo Makefile sin terminaci�n con las lineas siguientes.
+
+Ejemplo: Primera Regla
+
+ising.e: ising.c
+	gcc -Wall -O3 -o ising.e ising.c -lm
+
+make corre y crea el primer makefile que hay (algo as�)
+
+
+%.e: %.c
+	gcc -Wall -O3 -o $^ $@ -lm 
+
+Con esto crea cualquier archivo con cualquier fuente.
+
+Primer Script:
+.PHONY: ising perc all
+ising: ising.e
+perc:perc.e
+all: ising.e perc.e
+%.e: %.c
+	gcc -Wall -O3 -o $^ $@ -lm
+
+>>make (por default hace ising.e porque siempre hace el primero)
+>>make perc (har� un perc.e)
+>>make all (har� todos los archivos que sean all)
+
+Segundo Script:
+.PHONY: all clean
+SOURCE=$(wildcard *.c)
+EXES=&(patsubst %.c, %.e, $(SOURCE))
+all:$(EXES)
+%.e: %.c
+	gcc ...
+clean:
+	rm $(EXES)
+ 
+16/5
+
+Mejoras A Metrópolis
+       _
+      | p* * w(S_(i+1))/w(S_i)  con |S_(i+1)-S(i)| = 1
+Pa = <|
+      |_0                       con |S_(i+1)-S(i)| != 1
+
+y en nuestro caso w/w = EXP(-beta*deltaH) = EXP(-beta*deltaE). Esto será 
+Metrópolis usual.
+
+Si P_i*P_(i->j) = P_j*P_(j->j)
+
+Cuando estoy en sistemas meta-estables, o con muchos mínimos locales conviene
+modificar un poco este esquema.
+
+Si agregamos un w(S_(i+1)) sumando en el denominador mejora esto. Es lícito?
+Veamos equilibrio detallado:
+
+w(S_i)*w(S_i+1)/w(S_i+1)+w(S_i)=w(S_i+1)*w(S_i)/w(S_i)+w(S_i+1) lo cual cumple.
+
+Esto se lo llama método de Glauber.
+
+w(S_i+1)/w(S_i+1)+w(S_i) = 1/(1+w(S_i)/w(S_i+1)) = 1/(1+EXP(beta*deltaE))es mejor
+que la ponderación anterior.
+
+H = -J* * SUMA(<i,j>)S_i * S_j - B* * SUMA(i)S_i
+
+                                          -> Nuevo spin.
+                                         |  
+beta * deltaE = beta*[H_i+1 - H_i] = 2*S_ij * [J*(S_i-1j-1 + S_i+1j-1 + S_i-1j+1 +
++ S_i+1j+1)+B*]                                  |________________________________
+__________|                                                            =f
+ 
+w(S_i+1)/w(S_i) = EXP(-beta*deltaE) = EXP(-2*S_ij*[j* * f + B*])
+
+Entonces 1/(1+EXP(2*S_ij*[J* * f + B*])) = 1/(1+g)
+
+ Antes |  Después |   Pa  
+-------|----------|--------
+ -1    |    -1    | g/(1+g) *
+ -1    |    +1    | 1/(1+g) **
+ +1    |    -1    | g/(1+g) *
+ +1    |    +1    | 1/(1+g) **
+
+Se puede ver que los estados * son iguales entre ellos, y también sucede con los
+estados **, eso depende del estado después del cambio, si es +1 tendrá la 
+probabilidad ** y si es -1 tendrá la probabilidad *.
+
+Esto se ve bien en el gráfico de P vs beta*deltaE, para beta*deltaE muy grandes o
+chicos las prob se pegan, sin embargo para valores cercanos a 0, con este nuevo
+método hace que bajen las prob, haciendo que no queden ni en valles ni montañas
+al calcular.
+
+El otro cambio que se puede hacer es el tamaño del paso, esto se lo llama método
+de Swendsen.
+
+El cambio por grupos de spin debe ser representativo, no un todos up a down, o 
+todos down a up. El cambio por conglomerados analiza la red como si fuera 
+percolacion identificando fragméntos y genera uniones entre las celdas de los 
+fragméntos con una cierta probabilidad p=1-EXP(beta*J) para generar cierta
+flexibilidad y que no me suceda de que se cambien todos los up o down. Luego
+cambia solo los que está unidos y los separa.
+
+Si vemos esto a T->0 la prob quedará p~1 con lo cual me quedará varias celdas 
+unidas solucionandome problemas a estas temperaturas.
+
+Si vemos a T->inf la prob queda p~0, no haciendo nada.
+
+Vimos que tao ~ epsilon^z con z = 2.16, sin embargo cuando se aplica este método 
+vemos que tao ~ epsilon^0.35 y el juego completo de exponentes críticos no cambian
+siempre y cuando estés en la misma universalidad, entonces hay que cambiarla.
+Si no vamos y volvemos de universalidad a otra, no podiamos acelerar el tiempo
+de convergencia, en el método es la creación y destrucción de esas uniones entre
+celdas.
+
+
+28/5
+
+Llegué tarde, lo tiene Sol.
+
+30/5
+
+Dinámica Molecular
+
+
+<-°---------- °->   H = -J*SUMA()S_i * S_j - B*SUMA()S_i   (antes)
+
+                    H = SUMA(i=1,N)((p_i)^2)/(2*m) + SUMA(i<j)V(r_ij)
+        °                                           |_______________|
+      Ro=N/V                                  1/2 * SUMA(i;j=1;i!=j,N)V(r_ij)
+
+
+V(r) = 4*epsilon*[(Sigma/r)^12 - (Sigma/r)^6]
+F(r) = -dV/dr = 24*epsilon/Sigma * [2(Sigma/r)^13 - (Sigma/r)^7] 
+(F_x=-x/r * dV/dr)
+
+
+V(r)^
+    |°
+    |°
+    |° 
+    |°       Acá corta la F(r)              Para bajar los tiempos de cálculo 
+    | °       ^                             se puede hacer que a partir de un
+    | °       |                             radio de corte, deje de calcular
+    |  ° Sigma|                             la F_r para cada partícula.
+   -----°|----|----------------> r
+         °          °   °  °                Para implementar esto se hace:
+           °     °                          for(i=0, i<m,i++)
+             ° °                            { for(j...
+                                              {...
+                                                r<r_c}}
+Lo que hay que tener en cuenta que el radio de corte sea lo suficientemente
+no sea mayor a la grande para que V(r) --> 0 (~2.5*Sigma, 3.0*Sigma)y menor que
+la longitud de la red sobre dos o r_c < L/2 para que no empiece a contar particulas dos veces o
+particulas que no debería ver.
+
+Por haber hecho ese corte en r_c me perjudica en las transiciones de fase
+ya que matemáticamente cortar en r_c es hacer que a partir de ese punto es 0,
+con lo cual en la derivada (osea en la F(r)) ahí es una delta de Dirac lo cual
+es darle pequeños impulsos a las partículas.
+
+Una solución es desplazar ese potencial hacia arriba y llevarlo a 0, pero no
+me soluciona la discontinuidad de la derivada (V*(r) = 4*epsilon*[(Sigma/r)^12
+- (Sigma/r)^6]- 4*epsilon*[(Sigma/r_c)^12 - (Sigma/r_c)^6]) pero si nos movemos
+en pasos chicos la probabilidad de caer en r_c tiende a 0. 
+
+Es conveniente armarse una tabla con r=(0.001,...,2.5*Sigma)|r^2|F(r)|V(r)
+y luego inicializarla antes de cualquier cosa, y cada vez que necesitamos un
+valor, en vez de calcularlo solo accedemos a la tabla.
+
+i = (int)(r_ij - r_0)/(Delta r) o i = (int)(r_ij^2 - r_0^2)/((Delta r)^2) para
+acceder a la tabla. Conviene tener 100000 puntos en la tabla.
+
+En el caso de que se haga un paso temporal muy grande, puede pasar que dos
+particulas colapsen y que i < 0. En ese caso se coloca un if(i<0){i=0} y es
+como tener un cascaron.
+
+El punto máximo de el limite entre Vapor-Liquido Vapor es a Ro=0.4 y a T=1.5,
+y el punto triple a Ro=0.8 a T=0. Al truncar el potencial hacemos que el pico
+sea menor.
+
+Veamos el "diagrama de flujo":
+			          Inicio
+			             |
+    			 - - - - - ->|
+     			|            |
+     			|	Posiciones       Todo guarda vectores que se
+     			|	     |           los entregan a la próxima
+     			|	Interacion.c     función.
+     			|	     |
+     			|	Velocidades      (Velocity Verlet, avanzar.c)
+     			|	     |           
+     			- - - - - - -    
+
+El integrador temporal no puede ser cualquier cosa, tiene que cumplir que sea
+reversible en el tiempo (porque en mecanica todo puede ser revertido) y que
+cumpla con el teorema de Luiville (se conservan los Volumenes en los espacios
+de fase).
+
+Usualmente:
+x(t+h) = x(t) + v(t)*h + 1/2 * F(t)/m * h^2 + O(h^3)
+
+Y con Verlet:
+v(t+h/2) = v(t) + F(t)/m * h/2 + O(h^2)
+v(t+h) = v(t+h/2) + f(t+h)/m * h/2  + O(h^2)
+
+Esto de evaluar un medio paso antes y un medio paso después, hace que se
+repartan los errores y lo vuelva simetrico en el recorrido, haciendo reversible.
+
+v(t+h) = v(t) + 1/m * (f(t)+f(t+h))/2 * h
+
+Entonces:
+
+                                   Inicio
+			             |
+    			 - - - - - ->|
+     			|            |
+     			|	Posiciones      =>     x(t+h)
+     			|	     |           
+     			|	Interacion.c    =>     f(t+h) con float *x
+     			|	     |
+     			|	Velocidades     =>     v(t+h)
+     			|	     |           
+     			- - - - - - -    
+
+La primer prueba es graficar las Energías y que todo sume 0. h no conviene que
+sea mayor a 0.001.
+
+En principio este sistema es un NVE(micro-canónico) (o un NVEP porque se pide 
+que se conserve el momento) 
+<v^2> = (3*k*T)/m, hay que pedir que en el modulo de inicio se aplique una
+Gausseana asegurandome que <v_x> = 0 y por lo tanto al varianza queda
+ <(v_x)^2> = SUMA(i=1,N)((v_xi)^2)/N y por lo tanto 
+T = 1/3 * m/k * [<(v_x)^2> + <(v_y)^2> + <(v_z)^2>] y siempre hay que iniciar
+con T altas.
+
+T_deseada = 1/3 * m/k * [<(v_x')^2> + ...]
+T_d / T = (1/3 * m/k * [<(v_x')^2> + ...])/([<(v_x)^2> + <(v_y)^2> + <(v_z)^2>])
+
+=> T_d = 1/3 * m/k * [<(sqrt(T_d/T)*v_x)^2> + ...]
+                       |__________|
+                     factor de escala
+
+Para variar el sistema solo hay que variar el factor de escala, pero siempre 
+con pasos chicos, porque podemos caer en un sistema cualquiera, con la salvedad
+de usar el T real calculado con la ecuación, no con el T_d anterior.
+
+Tema unidades:
+x,y,z ------> x*=x/Sigma, y*=y/Sigma, z*=z/Sigma
+V ----------> V*=V/epsilon
+E ----------> E*=E/epsilon
+T ----------> T*=k/epsilon * T
+t ----------> t*=sqrt(epsilon/(m*Sigma^2)) * t
+P ----------> P*=Sigma^3/epsilon * P
+v ----------> v*=1/Sigma * x/(sqrt(epsilon/(m*Sigma^2))*t)
+
+
+4/6
+
+1) Coeficiente de Verlet:
+lambda_x = 1/N * SUMA(i=1,N) cos(2*pi/a * (x_i -a/2)) donde a es la distancia
+entre moléculas y para ver que el sistema termalizó si graficamos 
+1/3 * (lambda_x + lambda_y + lambda_z) en función de los pasos, esto flucuta
+al rededor de 1/sqrt(N).
+
+2) Teorema "H":
+H = INT()f(P)*Ln(f(P))dP^3 con f(P) = EXP(-p^2/2*m+k*t)/sqrt(8*pi^3*m^3*k^3*T^3)
+y dH/dt <= 0. Si graficamos H vs t al termalizar esto tiende a 0.
+
+Si graficamos el histograma de f~(v_x) vs v_x con un ancho de bin de delta v_x
+tendremos una campana al rededaor del 0.
+
+En vez de la integral que puede ser muy costosa, como queremos ver la tendancia
+H_x = SUMA(i=1,M)f(v_i)*Ln(f(v_i))*delta v_x y lo mismo para y y z. Finalmente
+se suma H = 1/3 * (H_x + H_y + H_z)
+
+3)Función de Distribución Radial g(r):
+r es la probabilidad de encontrar una partícula a una distancia r de una particula
+Para ello cuento cuantas particulas hay dentro de un radio dado y lo normalizo
+dV = 4*pi*r^2*dr y g(r)=dN/(dV*rho) y converge a 1 ya que rho=N/V.
+
+g(r)=1/4*pi*r^2*delta r*ro*[1/(N/2)SUMA(i=1,N)SUMA(i<j)delta_k(r-r_(ij))] que si
+lo graficamos nos quedará un muestreo mayor a 1 con tamaño de bin delta r.
+
+A una distancia mínima no podré ver nada ya que no pueden pisarse las partículas,
+y a una distancia grande esperaría que de 1 por lo anterior. Si estamos en el caso
+de un sólido cristalino, la primer distancia a la que no veo partículas será a, si
+a es la distancia mínima. Luego vendrá sqrt(2a) y como estamos en 3D después 
+sqrt(3a) y como esto es un muestreo continuo, serán picos y valles con los máximos
+en las distancias mencionadas hasta que eventualmente tienda a 1 para distancias
+grandes.
+
+Si comenzamos a calentar el sistema esto se va a desordenar esto se matiene pero
+los valles menos pronunciados pero manteniendo cierta oscilación.
+
+Finalmente si seguimos calentando y llegamos a un estado gaseoso las oscilaciones 
+se perderán y tendremos solo un máximo absoluto y luego tenderá a 1 a grandes
+distancias.
+
+En definitiva g(r) nos sirve para identificar para saber en que estado estamos.
+
+Como el sistema es muy ruidoso necesitamos promediar para pasos chicos.
+
+No hay que olvidar que primero hay que esperar a que el sistema termalize, sino
+se pueden llegar a ver pequeños picos que viendo el gráfico completo no corresponde
+a ningún estado. Además por cuestiones de representación no calcular más de L/2,
+más precisamente quedarse con el mínimo entre delta x, delta x+L y delta x-L, para
+implementar se puede usar una condición de la forma:
+
+if(-L/2 <= delta x <= L/2)
+{ delta x = delta x
+}
+elif(delta x >= L/2)
+{ delta x = delta x - L
+}
+elif(delta x <= -L/2)
+{ delta x = delta x + L
+}
+
+Además la distancia máxima entre particulas r_(ij) es sqrt(3)/2 * L y el x_max 
+entre partículas es L/2.
+
+Si hacemos <g(r)>=1/M * SUMA(k=1,M)g_k(r) algo pasa.
+
+Si hacemos un Muestreo de Gramo Grueso con el sistema ya en equilibrio tomamos 
+muestras dejando pasar varios choques entre particulas y empezamos a tomar valores
+promediados entre varias muestras con un espaciado considerable pero no muy 
+grande, esto nos puede casusar problemas de correlación.Pero podemos solucionarlo
+tomando valores aleatorios dentre de estos intervalos.
+
+La varianza será Sigma^2(<x>) = Sigma^2((x_1 + x_2 + ... + x_n)/n) = 
+=1/N^2 * [Sigma^2(x_1) + Sigma^2(x_2) + ... + Sigma^2(x_n)] = N/N^2 * Sigma^2(x_i)
+
+Volviendo a lo de la clase anterior, al subir el potencial y perder la cola para
+r>r_c estaríamos perdiendo potencial que se suma a la energía final del sistema,
+luego de integral el potencial junto con la probabilidad de encontrar una partícula
+en un dr, nos dará dV=V~_tot - V_tot = 4*pi/9 * N * rho * Sigma^3 * 4*epsilon *
+[5/2 * (Sima/r_c)^9 - 3/2 * (Sigma/r_c)^3] > 0 
+
+Esto signifima que nos va a dar una presión en exceso al final del día con 
+P=rho*k*T+1/N * rho^2 dV/drho|T y esto producirá un desplazamiento en el diagráma
+de fase y por ejemplo me bajará los puntos criticos (cuando sería gas todavía lo 
+veo como combinación liquido-gas)
+
+6/6
+
+Coeficiente de Lindemann:
+
+delta = (2/(N-1)N) SUMA(i<j)((<r_ij^2><r_ij>^2)/(<r_ij>^2)) ~ 
+(2/N(N-1)) SUMA()(sqrt(<r_ij^2><r_ij>^2)/d ~ sqrt(Delta^2)/d
+
+delta ^                                            
+      |
+      |                  °  
+      |                °
+      |              °
+   10-|      ° ° ° °
+      |   °  |_____|
+      | °      melt
+     ------------------>
+ 
+ T ^ solida    liquida
+   |   °      °
+   |  °      °
+   | °      °
+   |°      °
+   |      °
+   |
+   |
+  ------------------>E_tot
+
+
+dU = dU/dT|V dT + dU/dV|T dV         C_v dT -dU ~ C_v dT - 3/2 N k dT  
+     |_____|      |_____|                       = (C_v - 3/2 N k) dT
+        Cv          -P                            |_____________|
+                                                      N^2 k f(T)
+
+En difinitiva es obtener el segundo coeficiente de virial.
+
+=> P(V-V_0) = N^2 k B_2(T) T
+
+Lo que se puede hacer es: P = P_ideal + 1/3V <SUMA(i<J)f~_ij * r~_ij> =
+                              |_____|
+                              rho*k*T = 2N/3V <E_c>
+=P_ideal + (N^2*k*T)/V B_2(T)
+
+Lo importante del coeficiente es el signo, nos dice si hay presion por exceso
+o defecto. 
+
+Puede pasar que a T chicas las presiones son negativas, en ese caso se verá
+como las particulas se agrupan en los contornos que estamos observando (como si
+las paredes las estén "chupando") y se forman las famosas "pastas".
+
+Si hacemos <f*_ij * r*_ij> ~ P*/(rho* * T*) - 1 y nos paramos en rho*=0.4,
+cuando vemos <f*_ij * r*_ij> vs 1/T* al ir acercandonos a T* ~ 1.1 primero 
+vereiamos 0 y luego al seguir bajando entramos en el estado vapor+liq y la 
+presión subirá. Si ahora vamos a rho* >= 0.8 el gráfico empezará desde un nivel
+mayor y tendrá otra forma. En definitiva con este gráfico podremos medir 
+presiones e identificar en que estado estamos. Es interesante ver que sucede
+cuando las presiones son negativas.
+
+No está bueno usar densidades muy bajas ya que son dificiles de simular.
