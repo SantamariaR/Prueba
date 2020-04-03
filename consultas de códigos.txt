@@ -1,0 +1,36 @@
+Preguntas de los códigos(random)
+
+Hola, tengo unas preguntas sobre el video del programa que ve cuantos números random estan arriba y abajo de 0.5:
+1) por que las variables tienen que ser de tipo double y cual es la diferencia con un float?
+2)RAND_MAX es una funcion preestablecida?
+3)porque se comienza con low=0 y high=1?
+4)por que adentro de la funcion se define prob=PROB y no se usa directamente PROB?
+
+Respuesta:
+
+Hola Francisco! 
+1) En este caso, podrían haber sido float. La diferencia entre foat y double es que float es "precisión simple" y double es "precisión doble". Básicamente double puede representar muchos más números (y densidad de números en la recta numérica).  
+2) RAND_MAX es una constante que ya viene definida en el lenguaje. La define el lenguaje porque dependerá del tipo de computadora en la que están corriendo los programas (no es un valor universal! aunque siempre es un entero muy alto) 
+3) porque me equivoqué, perdón! high=0.  
+4) Bien! Punto sutil: es lo mismo, pero si querés dejar preparado el código para modificaciones futuras, te conviene sólo "tocar" esa línea!!!
+________________________________________________________________________________________________________________________________________________________
+
+Para “identificar” fragmentos o clusters, debemos recorrer la red y “etiquetar” cada sitio
+ocupado según corresponda. El recorrido se realiza a lo largo del “puntero”. Pero podemos
+imaginar que este puntero es un arreglo de N N, recorrido en el sentido de lectura. Las
+reglas de clasificación que debemos seguir son las siguientes:
+
+(a) Para un dado sitio ocupado, si su vecino de “arriba” e “izquierda” están vacíos,
+entonces se inicia una nueva etiqueta.
+
+(b) Para un dado sitio ocupado, si su vecino de “arriba” o “izquierda” (pero no simultáneamente;
+sólo uno de ellos!) están ocupados, entonces se copia la etiqueta del
+ocupado.
+
+(c) Para un dado sitio ocupado, si su vecino de “arriba” e “izquierda” están ocupados,
+entonces puede haber un “conflicto” de etiquetas que debe ser resuelto.
+
+nota: para el sito *(red+i) , su vecino de “arriba” es el sito *(red+i-n) y su vecino a “izquierda”
+es *(red+i-1).
+
+________________________________________________________________________________________________________________________________________________________
